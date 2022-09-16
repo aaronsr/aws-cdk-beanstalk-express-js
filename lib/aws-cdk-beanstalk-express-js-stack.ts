@@ -13,8 +13,7 @@ export class AwsCdkBeanstalkExpressJsStack extends cdk.Stack {
         input: CodePipelineSource.gitHub('aaronsr/aws-cdk-beanstalk-express-js', 'master'),
         commands: ['npm ci',
                    'npm run build',
-                  'npx cdk synth']
-
+                   'npx cdk synth']
       })
     })
   }
