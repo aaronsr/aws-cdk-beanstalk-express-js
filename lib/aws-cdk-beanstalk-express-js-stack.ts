@@ -2,8 +2,12 @@ import * as cdk from 'aws-cdk-lib';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
 import * as elasticbeanstalk from 'aws-cdk-lib/aws-elasticbeanstalk'
+import { CfnOutput } from 'aws-cdk-lib';
 
 export class AwsCdkBeanstalkExpressJsStack extends cdk.Stack {
+
+  public readonly environmentURL: CfnOutput
+
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
     
@@ -17,8 +21,21 @@ export class AwsCdkBeanstalkExpressJsStack extends cdk.Stack {
       })
     })
 
+    const appName = 'cdk-beanstalk-express'
+
     const app = new elasticbeanstalk.CfnApplication(this, 'Application', {
-      applicationName: 'cdk-beanstalk-express'
+      applicationName: appName
+    })
+
+    const environment = new elasticbeanstalk.CfnEnvironment(this, 'Environment', {
+      environmentName: 'cdk-beanstalk-express-environment',
+      applicationName: appName,
+      solutionStackName: '64bit Amazon Linux 2 v5.5.6 running Node.js 16'
+    })
+    environment.addDependsOn(app)
+
+    this.environmentURL = new CfnOutput(this, 'EnvironmentURL', {
+      value: `http://${environment.attrEndpointUrl}`
     })
   }
 }
