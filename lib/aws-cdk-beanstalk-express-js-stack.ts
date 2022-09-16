@@ -10,7 +10,7 @@ export class AwsCdkBeanstalkExpressJsStack extends cdk.Stack {
     new CodePipeline(this, 'cdk-beanstalk-express', {
       pipelineName: 'cdk-beanstalk-express',
       synth: new ShellStep('Synth', {
-        input: CodePipelineSource.gitHub('aaronsr/aws-cdk-beanstalk-express-js', 'master'),
+        input: CodePipelineSource.gitHub('aaronsr/aws-cdk-beanstalk-express-js', 'main'),
         commands: ['npm ci',
                    'npm run build',
                    'npx cdk synth']
