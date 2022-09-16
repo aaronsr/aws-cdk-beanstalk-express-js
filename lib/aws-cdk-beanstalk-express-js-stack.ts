@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as elasticbeanstalk from 'aws-cdk-lib/aws-elasticbeanstalk'
 
 export class AwsCdkBeanstalkExpressJsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -15,6 +15,10 @@ export class AwsCdkBeanstalkExpressJsStack extends cdk.Stack {
                    'npm run build',
                    'npx cdk synth']
       })
+    })
+
+    const app = new elasticbeanstalk.CfnApplication(this, 'Application', {
+      applicationName: 'cdk-beanstalk-express'
     })
   }
 }
